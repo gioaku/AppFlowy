@@ -6,6 +6,7 @@ import 'package:app_flowy/plugins/grid/application/prelude.dart';
 import 'package:appflowy_popover/appflowy_popover.dart';
 
 import '../../../layout/sizes.dart';
+import '../cell_accessory.dart';
 import '../cell_builder.dart';
 import 'date_editor.dart';
 
@@ -35,6 +36,20 @@ class GridDateCell extends GridCellWidget {
       cellStyle = null;
     }
   }
+
+  @override
+  List<GridCellAccessoryBuilder> Function(
+          GridCellAccessoryBuildContext buildContext)
+      get accessoryBuilder => (buildContext) => [
+            GridCellAccessoryBuilder(
+              builder: (key) => DateCellAccessory(
+                key: key,
+                // TODO: call bloc clear value
+                onTapCallback: () => {} ,
+                isCellEditing: buildContext.isCellEditing,
+              ),
+            ),
+          ];
 
   @override
   GridCellState<GridDateCell> createState() => _DateCellState();
@@ -75,8 +90,8 @@ class _DateCellState extends GridCellState<GridDateCell> {
                 child: Padding(
                   padding: GridSize.cellContentInsets,
                   child: FlowyText.medium(
-                    state.dateStr,
-                    overflow: TextOverflow.ellipsis,
+                        state.dateStr,
+                        overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ),

@@ -227,26 +227,19 @@ class RowContent extends StatelessWidget {
           width: cellId.fieldInfo.width.toDouble(),
           rowStateNotifier:
               Provider.of<RegionStateNotifier>(context, listen: false),
-          accessoryBuilder: (buildContext) {
-            final builder = child.accessoryBuilder;
-            List<GridCellAccessoryBuilder> accessories = [];
-            if (cellId.fieldInfo.isPrimary) {
-              accessories.add(
-                GridCellAccessoryBuilder(
-                  builder: (key) => PrimaryCellAccessory(
-                    key: key,
-                    onTapCallback: onExpand,
-                    isCellEditing: buildContext.isCellEditing,
-                  ),
+          accessoryBuilder: (buildContext) => <GridCellAccessoryBuilder>[
+            if (cellId.fieldInfo.isPrimary) ...[
+              GridCellAccessoryBuilder(
+                builder: (key) => PrimaryCellAccessory(
+                  key: key,
+                  onTapCallback: onExpand,
+                  isCellEditing: buildContext.isCellEditing,
                 ),
-              );
-            }
-
-            if (builder != null) {
-              accessories.addAll(builder(buildContext));
-            }
-            return accessories;
-          },
+              ),
+            ],
+            if (child.accessoryBuilder != null)
+              ...child.accessoryBuilder!(buildContext)
+          ],
           child: child,
         );
       },

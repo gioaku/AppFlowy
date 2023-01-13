@@ -56,8 +56,8 @@ class PrimaryCellAccessory extends StatefulWidget {
   const PrimaryCellAccessory({
     required this.onTapCallback,
     required this.isCellEditing,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<StatefulWidget> createState() => _PrimaryCellAccessoryState();
@@ -86,6 +86,38 @@ class _PrimaryCellAccessoryState extends State<PrimaryCellAccessory>
 
   @override
   bool enable() => !widget.isCellEditing;
+}
+
+class DateCellAccessory extends StatefulWidget {
+  final VoidCallback onTapCallback;
+  final bool isCellEditing;
+  const DateCellAccessory({
+    super.key,
+    required this.onTapCallback,
+    required this.isCellEditing,
+  });
+
+  @override
+  State<DateCellAccessory> createState() => _DateCellAccessoryState();
+}
+
+class _DateCellAccessoryState extends State<DateCellAccessory> {
+  @override
+  Widget build(BuildContext context) {
+     if (widget.isCellEditing) {
+      return const SizedBox.shrink();
+    } else {
+      return Tooltip(
+        // TODO add tooltip
+        message: LocaleKeys.tooltip,
+        textStyle: AFThemeExtension.of(context).caption.textColor(Colors.white),
+        child: svgWidget(
+          "grid/delete",
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      );
+    }
+  }
 }
 
 class AccessoryHover extends StatefulWidget {

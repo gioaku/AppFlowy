@@ -44,6 +44,9 @@ class DateCellBloc extends Bloc<DateCellEvent, DateCellState> {
       }),
     );
   }
+
+  Future<void> clearValue() async =>
+      add(const DateCellEvent.didReceiveCellUpdate(null));
 }
 
 @freezed
