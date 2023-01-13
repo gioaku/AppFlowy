@@ -47,6 +47,8 @@ class GridDateCell extends GridCellWidget {
                 // TODO: call bloc clear value
                 onTapCallback: () => {} ,
                 isCellEditing: buildContext.isCellEditing,
+                // TODO: get bloc value state
+                isEmpty: true,
               ),
             ),
           ];

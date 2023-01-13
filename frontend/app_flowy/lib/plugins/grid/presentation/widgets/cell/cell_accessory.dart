@@ -88,36 +88,55 @@ class _PrimaryCellAccessoryState extends State<PrimaryCellAccessory>
   bool enable() => !widget.isCellEditing;
 }
 
+// bug on show/hide of accessories
+// to replicate:
+// - pointer over row with 2 or more cell w/ accessories
+// bug 1: all accessories of the line show up
+// - pointer over one of accessorised cells
+// - staying in the same row move pointer on another cell and back
+// bug 2: now it shows up only while the pointer is on that cell
+//        while the other is shown until selected and doing the same
+// 
+// should decide if appearence is given by cell or row and stick to it
+
 class DateCellAccessory extends StatefulWidget {
   final VoidCallback onTapCallback;
   final bool isCellEditing;
+  final bool isEmpty;
   const DateCellAccessory({
     super.key,
     required this.onTapCallback,
     required this.isCellEditing,
+    required this.isEmpty,
   });
 
   @override
   State<DateCellAccessory> createState() => _DateCellAccessoryState();
 }
 
-class _DateCellAccessoryState extends State<DateCellAccessory> {
+class _DateCellAccessoryState extends State<DateCellAccessory> with GridCellAccessoryState {
   @override
   Widget build(BuildContext context) {
-     if (widget.isCellEditing) {
+    if (widget.isCellEditing) {
       return const SizedBox.shrink();
     } else {
       return Tooltip(
-        // TODO add tooltip
-        message: LocaleKeys.tooltip,
+        // TODO add right tooltips
+        message: widget.isEmpty ? LocaleKeys.tooltip : LocaleKeys.tooltip,
         textStyle: AFThemeExtension.of(context).caption.textColor(Colors.white),
         child: svgWidget(
-          "grid/delete",
+          widget.isEmpty ? "editor/date" : "grid/delete",
           color: Theme.of(context).colorScheme.primary,
         ),
       );
     }
   }
+  
+  @override
+  void onTap() => widget.onTapCallback();
+
+  @override
+  bool enable() => !widget.isCellEditing;
 }
 
 class AccessoryHover extends StatefulWidget {
