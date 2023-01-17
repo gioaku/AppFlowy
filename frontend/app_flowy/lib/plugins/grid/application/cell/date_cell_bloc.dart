@@ -16,10 +16,12 @@ class DateCellBloc extends Bloc<DateCellEvent, DateCellState> {
       (event, emit) async {
         event.when(
           initial: () => _startListening(),
-          didReceiveCellUpdate: (DateCellDataPB? cellData) {
-            emit(state.copyWith(
-                data: cellData, dateStr: _dateStrFromCellData(cellData)));
-          },
+          didReceiveCellUpdate: (DateCellDataPB? cellData) => emit(
+            state.copyWith(
+              data: cellData,
+              dateStr: _dateStrFromCellData(cellData),
+            ),
+          ),
         );
       },
     );
@@ -45,8 +47,8 @@ class DateCellBloc extends Bloc<DateCellEvent, DateCellState> {
     );
   }
 
-  Future<void> clearValue() async =>
-      add(const DateCellEvent.didReceiveCellUpdate(null));
+  // Future<void> clearValue() async =>
+  //     add(const DateCellEvent.didReceiveCellUpdate(null));
 }
 
 @freezed
@@ -77,4 +79,3 @@ class DateCellState with _$DateCellState {
 
 String _dateStrFromCellData(DateCellDataPB? cellData) =>
     cellData != null ? "${cellData.date} ${cellData.time}" : "";
-    

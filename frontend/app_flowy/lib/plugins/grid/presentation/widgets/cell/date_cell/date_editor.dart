@@ -128,7 +128,9 @@ class _CellCalendarWidgetState extends State<_CellCalendarWidget> {
             const TypeOptionSeparator(spacing: 12.0),
             const _IncludeTimeButton(),
             const TypeOptionSeparator(spacing: 12.0),
-            _DateTypeOptionButton(popoverMutex: popoverMutex)
+            _DateTypeOptionButton(popoverMutex: popoverMutex),
+            const TypeOptionSeparator(spacing: 12.0),
+            const ClearFieldButton(),
           ];
 
           return ListView.builder(
@@ -398,6 +400,30 @@ class _DateTypeOptionButton extends StatelessWidget {
           },
         );
       },
+    );
+  }
+}
+
+class ClearFieldButton extends StatelessWidget {
+  const ClearFieldButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: SizedBox(
+        height: GridSize.typeOptionItemHeight,
+        child: FlowyButton(
+          text: FlowyText.medium(LocaleKeys.grid_field_delete.tr()),
+          onTap: () => context
+              .read<DateCalBloc>()
+              .add(const DateCalEvent.didReceiveCellUpdate(null)),
+          leftIcon: svgWidget(
+            "grid/delete",
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
+      ),
     );
   }
 }
